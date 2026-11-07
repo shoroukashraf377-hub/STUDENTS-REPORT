@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>نظام إدارة وتحليل نتائج الطلاب</title>
+</head>
+
+<body>
+
+    <h2 style="text-align: center; font-family: sans-serif;">
+        نظام إدارة وتحليل نتائج الطلاب
+    </h2>
+
+    <h3 style="text-align: center; font-family: sans-serif;">
+        افتح Console (F12) لمشاهدة النتائج
+    </h3>
+
+    <script>
+
+        // 1. هيكلة بيانات الطالب (Class & Constructor)
+
+        class Student {
+
+            constructor(id, name, grades, attendance) {
+
+                this.id = id;
+                this.name = name;
+                this.grades = grades;
+                this.attendance = attendance;
+
+            }
+
+            // 2. حساب متوسط الدرجات باستخدام reduce
+
+            calculateAverage() {
+
+                const sum = this.grades.reduce(
+                    (total, grade) => total + grade,
+                    0
+                );
+
+                return sum / this.grades.length;
+
+            }
+
+            // 3. تحديد التقدير باستخدام if / else
+
+            getGradeLetter(avg) {
+
+                if (avg >= 85) {
+                    return 'A';
+                } else if (avg >= 75) {
+                    return 'B';
+                } else if (avg >= 65) {
+                    return 'C';
+                } else if (avg >= 50) {
+                    return 'D';
+                } else if (avg >= 40) {
+                    return 'E';
+                } else {
+                    return 'F';
+                }
+
+            }
+
+            // 4. تحديد النتيجة النهائية
+
+            getResult() {
+
+                const avg = this.calculateAverage();
+
+                if (avg >= 50 && this.attendance >= 75) {
+
+                    return "ناجح";
+
+                } else {
+
+                    return "يحتاج مراجعة";
+
+                }
+
+            }
+
+        }
+
+
+        // 5. إنشاء الطلاب (Objects Array)
+
+        const studentsList = [
+
+            new Student(1, "Ahmed", [70, 80, 75], 85),
+
+            new Student(2, "Mohamed", [42, 45, 48], 80),
+
+            new Student(3, "Fatma", [90, 85, 88], 90),
+
+            new Student(4, "Ali", [44, 46, 45], 70)
+
+        ];
+
+
+        // 6. عرض تقرير الطلاب في Console
+
+        console.log("----- Students Report -----");
+
+        studentsList.forEach(student => {
+
+            const avg = student.calculateAverage();
+
+            console.log({
+
+                id: student.id,
+
+                name: student.name,
+
+                grades: student.grades,
+
+                attendance: student.attendance,
+
+                average: avg,
+
+                grade: student.getGradeLetter(avg),
+
+                result: student.getResult()
+
+            });
+
+        });
+
+
+        // 7. لجنة الرأفة باستخدام filter
+
+        // استخراج الطلاب الذين متوسط درجاتهم من 40 إلى أقل من 50
+
+        const mercyStudents = studentsList.filter(student => {
+
+            const avg = student.calculateAverage();
+
+            return avg >= 40 && avg < 50;
+
+        });
+
+
+        // 8. إضافة 5 درجات رأفة باستخدام map
+
+        const mercyAverages = mercyStudents.map(student => {
+
+            return student.calculateAverage() + 5;
+
+        });
+
+
+        // 9. عرض تقرير لجنة الرأفة
+
+        console.log("----- Mercy Committee Report -----");
+
+        console.log("Students:", mercyStudents);
+
+
+        // 10. حساب مجموع متوسطات الطلاب بعد الرأفة باستخدام reduce
+
+        const totalMercyAvg = mercyAverages.reduce(
+
+            (sum, avg) => sum + avg,
+
+            0
+
+        );
+
+
+        // 11. حساب المتوسط النهائي مع منع القسمة على صفر
+
+        const finalMercyAverage = mercyAverages.length > 0
+
+            ? totalMercyAvg / mercyAverages.length
+
+            : 0;
+
+
+        // 12. عرض النتيجة النهائية
+
+        console.log(
+            "متوسط درجات الطلاب بعد الرأفة:",
+            finalMercyAverage
+        );
+
+
+        console.log("----- End of Report -----");
+
+    </script>
+
+</body>
+
+</html>
